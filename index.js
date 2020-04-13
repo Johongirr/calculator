@@ -22,9 +22,9 @@ function multiply(num1,num2){
 }
 function divide(num1,num2){
     if(num2 == 0){
-        return 'Can\'t divide by 0'
+        document.querySelector('#error__message').classList.add('show');
     } else {
-        return num1 / num2;
+        return Math.round(num1 / num2);
     }
 }
 function operate(operator,num1,num2){
@@ -51,7 +51,7 @@ function operate(operator,num1,num2){
 function populateDisplayNumbers(e){
     let currentNumber = this.textContent || e.key;
     
-    if(currentNumber.match(/^[0-9]+$/) != null){
+    if((currentNumber.match(/^[0-9]+$/) != null) && displayValues.numbers.length < 12){
        displayValues.numbers += currentNumber;
        calculatorOperationsContainer.textContent += currentNumber;
        operationsLength = calculatorOperationsContainer.textContent.trim().length;
@@ -62,7 +62,7 @@ function populateDisplayNumbers(e){
 
 function populateDisplayOperators(e){
     let currentOperator = this.textContent || e.key;
-  
+    
     switch(currentOperator){
         case '+':   
             
@@ -144,13 +144,12 @@ function populateDisplayOperators(e){
 
            
         break;
-        case 'Enter':
         case '=':
             
             if(operators.length == 2){
                 operators.push(displayValues.numbers)
                 const [num1,operator, num2] = operators;
-                console.log(operators)
+                
                 calculatorResult.textContent = operate(operator, parseInt(num1),parseInt(num2));
                 calculatorOperationsContainer.textContent = calculatorResult.textContent;
                 operationsLength = calculatorOperationsContainer.textContent.trim().length;
@@ -159,8 +158,7 @@ function populateDisplayOperators(e){
                 operators = []
                 operators.push(calculatorOperationsContainer.textContent.trim());
                 displayValues.numbers = operators[0].slice();
-                console.log(displayValues)
-                 
+                     
                  
 
             }
@@ -168,28 +166,30 @@ function populateDisplayOperators(e){
     }
     displayNumbersLength = displayValues.numbers.length
     operationsLength = calculatorOperationsContainer.textContent.trim().length;
-    console.log(displayNumbersLength)
+   
 
 }
  
 function clearScreen(e){
     let currentDelete = e.key || this.textContent.toLowerCase();
-    if(currentDelete.includes('c')){
+    console.log(currentDelete, '12')
+    if(currentDelete == 'c'){
         calculatorOperationsContainer.textContent = '';
         calculatorResult.textContent = '';
         operators = [];
         displayValues.numbers = '';
         displayNumbersLength = displayValues.numbers.length
-        console.log(`Operators after clear screen: ${operators}, ${displayValues}`)
+       
     }
      
 }
 
 function erase(e){
+     
     let currentBackSpace = e.key || this.textContent
-    
-    if(currentBackSpace == 'Backspace' || currentBackSpace == '<'){
-        console.log(e.key)
+     console.log(currentBackSpace)
+    if(currentBackSpace == '<' || currentBackSpace == 'Backspace'){
+        console.log(currentBackSpace)    
      if(operationsLength < 1){
         operationsLength = 0;
      } else {
@@ -208,31 +208,21 @@ function erase(e){
     }
         calculatorResult.textContent = updateErase(calculatorResult.textContent.trim(), operationsLength);
         displayValues.numbers = updateErase(displayValues.numbers, displayNumbersLength);
-        
-    
+       
     
     }
-    console.log(`Operators after erase: ${operators}`)  
-    console.log(`calculation container after erase: ${calculatorOperationsContainer.textContent}`)
-    console.log(`Display number object after erase: ${displayValues}`)
+  
        
  
 }
   
 function updateErase(currentDigits, strLength){
-    return currentDigits
-    .split('')
-    .filter((letter,index)=>{
-            if(index == strLength){
-          
-            } else {
-                return letter;
-            }
-    })
-    .join('') 
+    return currentDigits.slice(0, strLength);
 }
 
- 
+ function removeErrorMessage(){
+     this.parentNode.parentNode.removeChild(this.parentNode);
+ }
  
  
  
@@ -252,3 +242,6 @@ window.addEventListener('keydown', clearScreen)
 // event on erasing single digits or operators
 document.querySelector('.erase').addEventListener('click', erase);
 window.addEventListener('keydown', erase)
+
+// adding event listener to remove error message when number divided by 0 
+document.querySelector('.remove__error-message').addEventListener('click', removeErrorMessage);
