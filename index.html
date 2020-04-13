@@ -3,12 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <title>Calculator</title>
 </head>
 <body>
-    
+    <div class="github__container">
+        <a href="https://github.com/Johongirr/calculator" target="_blank">
+            <i class="fab fa-github"></i>
+        </a>
+        
+    </div>
     <div class="container">
+        <div id="error__message">
+            <span class="remove__error-message">x</span>
+            <p>
+                You can't divide by 0 
+            </p>
+        </div>
         <article id="caclculator">
             <header id="calculator__screen">
                <div class="position__absolute">
