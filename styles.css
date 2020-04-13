@@ -1,0 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Gotu&display=swap');
+
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+/* css variables */
+:root {
+    --screen-color: #302e2e;
+    --calculator-digits-background-color: #181818;
+    --operators-color: rgb(52, 116, 235);
+}
+/* general styles */
+body {
+    font-family: Gotue, monospace, serif;
+    color: #fff;
+
+}
+button {
+    display: inline-block;
+    border: 0;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.container {
+    width: 90%;
+    max-width: 400px;
+    margin: 5rem auto;
+}
+
+/* desktop styles */
+#calculator__screen {
+    position: relative;
+    background-color: var(--screen-color);
+    height: 20vh;
+}
+#calculator__screen .position__absolute {
+    position: absolute;
+    bottom: 3rem;
+    right: 0.5rem;
+    font-size: 1.1rem;
+
+}
+#calculator__result {
+    
+    position: absolute;
+    bottom: 0.8rem;
+    right: 0.5rem;
+}
+#calculator__screen #calculator__result {
+    font-size: 2rem;
+    margin-top: 0.5rem;
+}
+#calcultor__digits {
+    background-color: var(--calculator-digits-background-color);
+    display: grid;
+    grid-template-areas: 
+    "delete erase substract divide"
+    "seven eight nine multiply"
+    "four five six plus"
+    "one two three equal"
+    "dot zero zero equal";
+    grid-gap: 10px;
+    grid-auto-rows: 4rem;
+    padding: 1rem;
+}
+#calcultor__digits > * {
+    font-size: 1.3rem;
+    color: #fff;
+    font-weight: 900;
+}
+#calcultor__digits .numbers {
+    background-color: var(--screen-color);
+}
+#calcultor__digits .operators {
+    background-color: var(--operators-color);
+}
+
+[data-delete="delete"] {
+    grid-area: delete;
+}
+[data-erase="erase"] {
+    grid-area: erase;
+}
+[data-substract ="substract"] {
+    grid-area: substract;
+}
+[data-division="divide"] {
+    grid-area: divide;
+}
+[data-digit="seven"] {
+    grid-area: seven;
+}
+[data-eight="eight"] {
+    grid-area: eight;
+}
+[data-nine="nine"] {
+    grid-area: nine;
+}
+[data-multiply="multiply"] {
+    grid-area: multiply;
+}
+[data-digit="four"]{
+    grid-area: four;
+}
+[data-digit="five"] {
+    grid-area: five;
+}
+[data-digit="six"] {
+    grid-area: six;
+}
+[data-add="add"] {
+    grid-area: plus;
+}
+[data-digit="one"] {
+    grid-area: one;
+}
+[data-digit="two"] {
+    grid-area: two;
+}
+[data-digit="three"] {
+    grid-area: three;
+}
+[data-calculate="calculate"] {
+    grid-area: equal;
+}
+[data-decimal="decimal"] {
+    grid-area: dot;
+}
+[data-digit="zero"] {
+    grid-area: zero;
+}
+
+
+button {
+    transform: translateY(-3px);
+    
+}
+button:focus {
+    transform: translateY(-2px);
+    
+}
+ 
+
+
+
+
