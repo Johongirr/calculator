@@ -7,6 +7,7 @@ const displayValues = {
 }
 
 let operationsLength = 0;
+let displayNumbersLength = 0;
 let operators = [];
 const second = [];
 
@@ -54,6 +55,7 @@ function populateDisplayNumbers(e){
        displayValues.numbers += currentNumber;
        calculatorOperationsContainer.textContent += currentNumber;
        operationsLength = calculatorOperationsContainer.textContent.trim().length;
+       displayNumbersLength = displayValues.numbers.length
        console.log(displayValues)
     }
 }
@@ -152,7 +154,7 @@ function populateDisplayOperators(e){
                 calculatorResult.textContent = operate(operator, parseInt(num1),parseInt(num2));
                 calculatorOperationsContainer.textContent = calculatorResult.textContent;
                 operationsLength = calculatorOperationsContainer.textContent.trim().length;
-
+                displayNumbersLength = displayValues.numbers.length
                 
                 operators = []
                 operators.push(calculatorOperationsContainer.textContent.trim());
@@ -164,7 +166,9 @@ function populateDisplayOperators(e){
             }
         break;
     }
+    displayNumbersLength = displayValues.numbers.length
     operationsLength = calculatorOperationsContainer.textContent.trim().length;
+    console.log(displayNumbersLength)
 
 }
  
@@ -175,6 +179,7 @@ function clearScreen(e){
         calculatorResult.textContent = '';
         operators = [];
         displayValues.numbers = '';
+        displayNumbersLength = displayValues.numbers.length
         console.log(`Operators after clear screen: ${operators}, ${displayValues}`)
     }
      
@@ -191,24 +196,34 @@ function erase(e){
         operationsLength--;
          
      }
+     if(displayNumbersLength < 1){
+         displayNumbersLength = 0;
+     } else {
+         displayNumbersLength--;
+     }
+     
      if(calculatorOperationsContainer.textContent.trim().length > 0){
-        calculatorOperationsContainer.textContent = updateErase(calculatorOperationsContainer.textContent.trim())
+        calculatorOperationsContainer.textContent = updateErase(calculatorOperationsContainer.textContent.trim(), operationsLength)
 
     }
-        displayValues.numbers = updateErase(displayValues.numbers);
-        calculatorResult.textContent = updateErase(calculatorResult.textContent.trim());
+        calculatorResult.textContent = updateErase(calculatorResult.textContent.trim(), operationsLength);
+        displayValues.numbers = updateErase(displayValues.numbers, displayNumbersLength);
+        
     
-    console.log(`Operators after erase: ${operators}`)       
+    
     }
+    console.log(`Operators after erase: ${operators}`)  
+    console.log(`calculation container after erase: ${calculatorOperationsContainer.textContent}`)
+    console.log(`Display number object after erase: ${displayValues}`)
        
  
 }
   
-function updateErase(currentDigits){
+function updateErase(currentDigits, strLength){
     return currentDigits
     .split('')
     .filter((letter,index)=>{
-            if(index == operationsLength){
+            if(index == strLength){
           
             } else {
                 return letter;
