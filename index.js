@@ -48,28 +48,31 @@ function operate(operator,num1,num2){
 
 
 function populateDisplayNumbers(e){
-    console.log(e.key)
-   if(this.hasAttribute('data-digit')){
-       displayValues.numbers += this.textContent;
-       
-       calculatorOperationsContainer.textContent += this.textContent;
+    let currentNumber = this.textContent || e.key;
+    
+    if(currentNumber.match(/^[0-9]+$/) != null){
+       displayValues.numbers += currentNumber;
+       calculatorOperationsContainer.textContent += currentNumber;
        operationsLength = calculatorOperationsContainer.textContent.trim().length;
-   }  
+       console.log(displayValues)
+    }
 }
 
 function populateDisplayOperators(e){
     let currentOperator = this.textContent || e.key;
-    console.log(currentOperator)
+  
     switch(currentOperator){
         case '+':   
             
             if(operators.length == 2){
                 operators[1] = '+';  
-                 
                
+                
             } else if(operators.length == 1){
                 calculatorOperationsContainer.textContent += currentOperator;
                 operators.push('+');
+                operators[0] = displayValues.numbers;
+                displayValues.numbers = '';                 
             } else if(operators.length == 0) {
                 calculatorOperationsContainer.textContent += currentOperator;
                 operators.push(displayValues.numbers);
@@ -88,6 +91,8 @@ function populateDisplayOperators(e){
         } else if(operators.length == 1){
             calculatorOperationsContainer.textContent += currentOperator;
             operators.push('-');
+            operators[0] = displayValues.numbers;
+            displayValues.numbers = '';
         } else if(operators.length == 0) {
             calculatorOperationsContainer.textContent += currentOperator;
             operators.push(displayValues.numbers);
@@ -106,6 +111,8 @@ function populateDisplayOperators(e){
             } else if(operators.length == 1){
                 calculatorOperationsContainer.textContent += currentOperator;
                 operators.push('x');
+                operators[0] = displayValues.numbers;
+                displayValues.numbers = '';
             } else if(operators.length == 0) {
                 calculatorOperationsContainer.textContent += currentOperator;
                 operators.push(displayValues.numbers);
@@ -124,6 +131,8 @@ function populateDisplayOperators(e){
             } else if(operators.length == 1){
                 calculatorOperationsContainer.textContent += currentOperator;
                 operators.push('/');
+                operators[0] = displayValues.numbers;
+                displayValues.numbers = '';
             } else if(operators.length == 0) {
                 calculatorOperationsContainer.textContent += currentOperator;
                 operators.push(displayValues.numbers);
@@ -133,17 +142,24 @@ function populateDisplayOperators(e){
 
            
         break;
+        case 'Enter':
         case '=':
+            
             if(operators.length == 2){
                 operators.push(displayValues.numbers)
                 const [num1,operator, num2] = operators;
+                console.log(operators)
                 calculatorResult.textContent = operate(operator, parseInt(num1),parseInt(num2));
                 calculatorOperationsContainer.textContent = calculatorResult.textContent;
                 operationsLength = calculatorOperationsContainer.textContent.trim().length;
 
+                
                 operators = []
-                operators.push(calculatorOperationsContainer.textContent);
-                displayValues.numbers = '';
+                operators.push(calculatorOperationsContainer.textContent.trim());
+                displayValues.numbers = operators[0].slice();
+                console.log(displayValues)
+                 
+                 
 
             }
         break;
@@ -152,69 +168,72 @@ function populateDisplayOperators(e){
 
 }
  
-function clearScreen(){
-    calculatorOperationsContainer.textContent = '';
-    calculatorResult.textContent = '';
-    operators = [];
-    displayValues.numbers = '';
-}
-function erase(){
-    if(operationsLength < 1){
-        operationsLength = 0;
-    } else {
-        operationsLength--;
-        operators.pop();
+function clearScreen(e){
+    let currentDelete = e.key || this.textContent.toLowerCase();
+    if(currentDelete.includes('c')){
+        calculatorOperationsContainer.textContent = '';
+        calculatorResult.textContent = '';
+        operators = [];
+        displayValues.numbers = '';
+        console.log(`Operators after clear screen: ${operators}, ${displayValues}`)
     }
- if(calculatorOperationsContainer.textContent.trim().length > 0){
-    calculatorOperationsContainer.textContent = calculatorOperationsContainer.textContent.trim()
-    .split('')
-    .filter((letter,index)=>{
-        if(index == operationsLength){
-             
-        } else {
-           return letter;
-        }
-    })
-    .join('') 
- }
- displayValues.numbers = displayValues.numbers
- .split('')
- .filter((letter,index)=>{
-     if(index == operationsLength){
-          
-     } else {
-        return letter;
-     }
- })
- .join('') 
- calculatorResult.textContent = calculatorResult.textContent.trim()
- .split('')
- .filter((letter,index)=>{
-     if(index == operationsLength){
-          
-     } else {
-        return letter;
-     }
- })
- .join('') 
+     
+}
 
- console.log(displayValues, operators)
+function erase(e){
+    let currentBackSpace = e.key || this.textContent
+    
+    if(currentBackSpace == 'Backspace' || currentBackSpace == '<'){
+        console.log(e.key)
+     if(operationsLength < 1){
+        operationsLength = 0;
+     } else {
+        operationsLength--;
+         
+     }
+     if(calculatorOperationsContainer.textContent.trim().length > 0){
+        calculatorOperationsContainer.textContent = updateErase(calculatorOperationsContainer.textContent.trim())
 
+    }
+        displayValues.numbers = updateErase(displayValues.numbers);
+        calculatorResult.textContent = updateErase(calculatorResult.textContent.trim());
+    
+    console.log(`Operators after erase: ${operators}`)       
+    }
+       
+ 
 }
   
+function updateErase(currentDigits){
+    return currentDigits
+    .split('')
+    .filter((letter,index)=>{
+            if(index == operationsLength){
+          
+            } else {
+                return letter;
+            }
+    })
+    .join('') 
+}
+
+ 
+ 
+ 
  
 
-// keyboard event for all digits and operators
-//window.addEventListener('keydown', populateDisplayNumbers);
-window.addEventListener('keydown', populateDisplayOperators);
 // event on numbers
 document.querySelectorAll('.numbers').forEach(button => button.addEventListener('click', populateDisplayNumbers));
+window.addEventListener('keydown', populateDisplayNumbers);
 
 // event on operators
 document.querySelectorAll('.operator').forEach(operator => operator.addEventListener('click', populateDisplayOperators));
+window.addEventListener('keydown', populateDisplayOperators);
 
 // event on remove all
 document.querySelector('.delete').addEventListener('click', clearScreen)
-  
-// even on erasing single digits or operators
+window.addEventListener('keydown', clearScreen)
+
+// event on erasing single digits or operators
 document.querySelector('.erase').addEventListener('click', erase);
+window.addEventListener('keydown', erase)
