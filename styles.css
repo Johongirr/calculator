@@ -16,6 +16,7 @@
 body {
     font-family: Gotue, monospace, serif;
     color: #fff;
+    background-color: darkcyan;
 
 }
 button {
@@ -29,30 +30,49 @@ button {
     max-width: 400px;
     margin: 5rem auto;
 }
+a {
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+}
+/* github container */
+.github__container {
+    position: fixed;
+    top: -1rem;
+    right: -4rem;
+    width: 200px;
+    
+    transform: rotate(45deg);
+    text-align: center;
+    font-size: 2rem;
+    background-color: #302e2e;
+   
+    padding: 2.4rem 1rem 1.2rem 1rem;
+    
+}
 
 /* desktop styles */
+ 
 #calculator__screen {
     position: relative;
     background-color: var(--screen-color);
-    height: 20vh;
+    height: 100px;
 }
 #calculator__screen .position__absolute {
     position: absolute;
-    bottom: 3rem;
+    bottom: 3.5rem;
     right: 0.5rem;
-    font-size: 1.1rem;
+    font-size: 1.5rem;
 
 }
 #calculator__result {
-    
+    font-size: 2rem;
+    margin-top: 2.9rem;
     position: absolute;
     bottom: 0.8rem;
     right: 0.5rem;
 }
-#calculator__screen #calculator__result {
-    font-size: 2rem;
-    margin-top: 0.5rem;
-}
+ 
 #calcultor__digits {
     background-color: var(--calculator-digits-background-color);
     display: grid;
@@ -141,9 +161,43 @@ button {
 button:focus {
     transform: translateY(-2px);
     
+    outline-color: rgb(197, 50, 50);
+    
 }
- 
+ /* error message */
+ #error__message {
+     position: relative;
+     color: #000;
+     border: 2px solid red;
+     background-color: rgb(219, 51, 51);
+     color: #fff;
+     font-size: 1.4rem;
+     font-weight: 900;
+     padding: 1rem 1rem;
+     margin-bottom: 1rem;
+     display: none;
+     transition: all 2s;
+ }
 
+ #error__message span {
+     position: absolute;
+     top: 0.4rem;
+     right: 0.6rem;
+     margin-bottom: 1rem;
+     background-color: rgb(197, 50, 50);
+     padding: 0.4rem;
+     cursor: pointer;
+ }
+ #error__message p {
+     padding-top: 2rem;
+ }
+ #error__message.show {
+     display: block;
+ }
 
-
+ @media (max-width: 600px){
+     .container {
+         margin-top: 10rem;
+     }
+ }
 
